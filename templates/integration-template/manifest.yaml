@@ -1,0 +1,25 @@
+name: your-tool
+display_name: Your Tool Name
+version: 0.1.0
+author: Your Name
+description: Brief description of what this integration does
+category: edr  # edr, siem, soar, itsm, alerting, threat_intel, email, chat, cloud, identity
+min_sdk_version: "0.1.0"
+
+config:
+  api_key:
+    type: string
+    required: true
+    secret: true
+    description: API key for authentication
+  base_url:
+    type: string
+    required: true
+    description: API base URL
+    default: "https://api.example.com"
+
+actions:
+  - name: example_action
+    description: Describe what this action does
+    inputs: [param1, param2]
+    outputs: [result_field]

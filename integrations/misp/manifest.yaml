@@ -1,0 +1,54 @@
+name: misp
+display_name: MISP
+version: 0.1.0
+author: OpenSOAR Community
+description: MISP threat intelligence platform integration for event and IOC management
+category: threat_intel
+min_sdk_version: "0.1.0"
+
+config:
+  base_url:
+    type: string
+    required: true
+    description: MISP instance URL (e.g. https://misp.yourorg.com)
+  api_key:
+    type: string
+    required: true
+    secret: true
+    description: MISP automation API key (found in User Profile > Auth Keys)
+  verify_ssl:
+    type: boolean
+    required: false
+    default: true
+    description: Whether to verify SSL certificates (set false for self-signed certs)
+
+actions:
+  - name: search_events
+    description: Search MISP events by keyword, tag, or attribute value
+    inputs: [value, type, tags, limit]
+    outputs: [events, total]
+
+  - name: get_event
+    description: Get full event details by event ID
+    inputs: [event_id]
+    outputs: [event]
+
+  - name: create_event
+    description: Create a new MISP event
+    inputs: [info, distribution, threat_level, analysis]
+    outputs: [event_id]
+
+  - name: add_attribute
+    description: Add an attribute (IOC) to an event
+    inputs: [event_id, type, value, category, to_ids, comment]
+    outputs: [attribute_id]
+
+  - name: search_attributes
+    description: Search attributes across all events
+    inputs: [value, type, category, tags]
+    outputs: [attributes, total]
+
+  - name: tag_event
+    description: Add a tag to an event
+    inputs: [event_id, tag]
+    outputs: [status]

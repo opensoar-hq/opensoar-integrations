@@ -1,0 +1,53 @@
+name: jira
+display_name: Jira
+version: 0.1.0
+author: OpenSOAR Community
+description: Jira integration for creating and managing issues as part of incident response workflows
+category: itsm
+min_sdk_version: "0.1.0"
+
+config:
+  base_url:
+    type: string
+    required: true
+    description: Jira instance URL (e.g. https://yourcompany.atlassian.net)
+  email:
+    type: string
+    required: true
+    description: Atlassian account email for API authentication
+  api_token:
+    type: string
+    required: true
+    secret: true
+    description: Atlassian API token (generate at https://id.atlassian.com/manage-profile/security/api-tokens)
+
+actions:
+  - name: create_issue
+    description: Create a new Jira issue
+    inputs: [project_key, summary, description, issue_type, priority]
+    outputs: [issue_key, issue_id, self_url]
+
+  - name: get_issue
+    description: Get issue details by key
+    inputs: [issue_key]
+    outputs: [issue]
+
+  - name: update_issue
+    description: Update fields on an existing issue
+    inputs: [issue_key, fields]
+    outputs: [status]
+
+  - name: transition_issue
+    description: Transition an issue to a new status
+    inputs: [issue_key, transition_name]
+    outputs: [status]
+
+  - name: add_comment
+    description: Add a comment to an issue
+    inputs: [issue_key, body]
+    outputs: [comment_id]
+
+  - name: search_issues
+    description: Search issues with JQL
+    inputs: [jql, max_results]
+    outputs: [issues, total]

@@ -1,0 +1,49 @@
+name: sentinelone
+display_name: SentinelOne
+version: 0.1.0
+author: OpenSOAR Community
+description: SentinelOne integration for endpoint isolation, threat management, and remediation
+category: edr
+min_sdk_version: "0.1.0"
+
+config:
+  base_url:
+    type: string
+    required: true
+    description: SentinelOne management console URL (e.g. https://usea1.sentinelone.net)
+  api_token:
+    type: string
+    required: true
+    secret: true
+    description: API token generated from the SentinelOne console
+
+actions:
+  - name: isolate_endpoint
+    description: Disconnect an endpoint from the network
+    inputs: [agent_id]
+    outputs: [status, affected]
+
+  - name: reconnect_endpoint
+    description: Reconnect a previously isolated endpoint
+    inputs: [agent_id]
+    outputs: [status, affected]
+
+  - name: get_threats
+    description: Query threats with filters
+    inputs: [query, limit, status]
+    outputs: [threats, total]
+
+  - name: get_agent
+    description: Get agent details by ID
+    inputs: [agent_id]
+    outputs: [agent]
+
+  - name: mitigate_threat
+    description: Apply a mitigation action to a threat
+    inputs: [threat_id, action]
+    outputs: [status, affected]
+
+  - name: initiate_scan
+    description: Initiate a full disk scan on an agent
+    inputs: [agent_id]
+    outputs: [status, affected]

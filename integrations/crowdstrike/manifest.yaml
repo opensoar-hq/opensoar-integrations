@@ -1,0 +1,60 @@
+name: crowdstrike
+display_name: CrowdStrike Falcon
+version: 0.1.0
+author: OpenSOAR Community
+description: CrowdStrike Falcon integration for host isolation, detection management, and IOC operations
+category: edr
+min_sdk_version: "0.1.0"
+
+config:
+  base_url:
+    type: string
+    required: true
+    description: CrowdStrike API base URL (e.g. https://api.crowdstrike.com)
+    default: "https://api.crowdstrike.com"
+  client_id:
+    type: string
+    required: true
+    secret: true
+    description: OAuth2 API client ID
+  client_secret:
+    type: string
+    required: true
+    secret: true
+    description: OAuth2 API client secret
+
+actions:
+  - name: isolate_host
+    description: Network-isolate a host by hostname or device ID
+    inputs: [hostname, device_id]
+    outputs: [status, device_id]
+
+  - name: lift_containment
+    description: Remove network isolation from a host
+    inputs: [device_id]
+    outputs: [status, device_id]
+
+  - name: get_detection
+    description: Get details for a specific detection by ID
+    inputs: [detection_id]
+    outputs: [detection]
+
+  - name: search_detections
+    description: Search detections with FQL filter
+    inputs: [filter, limit]
+    outputs: [detection_ids, total]
+
+  - name: search_iocs
+    description: Search custom IOCs
+    inputs: [type, value]
+    outputs: [resources, total]
+
+  - name: create_ioc
+    description: Create a custom IOC indicator
+    inputs: [type, value, action, severity, description]
+    outputs: [resource_id]
+
+  - name: get_device
+    description: Get host details by device ID
+    inputs: [device_id]
+    outputs: [device]

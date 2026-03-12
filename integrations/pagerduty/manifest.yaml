@@ -1,0 +1,54 @@
+name: pagerduty
+display_name: PagerDuty
+version: 0.1.0
+author: OpenSOAR Community
+description: PagerDuty integration for incident creation, acknowledgment, and resolution
+category: alerting
+min_sdk_version: "0.1.0"
+
+config:
+  api_token:
+    type: string
+    required: true
+    secret: true
+    description: PagerDuty REST API token (v2)
+  routing_key:
+    type: string
+    required: false
+    secret: true
+    description: Events API v2 routing key (integration key from a PagerDuty service)
+  default_from_email:
+    type: string
+    required: false
+    description: Email of the PagerDuty user for API actions that require a From header
+
+actions:
+  - name: trigger_incident
+    description: Trigger a new incident via the Events API v2
+    inputs: [routing_key, summary, severity, source, custom_details]
+    outputs: [dedup_key, status, message]
+
+  - name: acknowledge_incident
+    description: Acknowledge an incident by dedup key
+    inputs: [routing_key, dedup_key]
+    outputs: [status, message]
+
+  - name: resolve_incident
+    description: Resolve an incident by dedup key
+    inputs: [routing_key, dedup_key]
+    outputs: [status, message]
+
+  - name: get_incident
+    description: Get incident details by ID via the REST API
+    inputs: [incident_id]
+    outputs: [incident]
+
+  - name: list_incidents
+    description: List incidents with filters
+    inputs: [statuses, urgencies, since, until]
+    outputs: [incidents, total]
+
+  - name: create_note
+    description: Add a note to an incident
+    inputs: [incident_id, content]
+    outputs: [note_id]

@@ -1,0 +1,15 @@
+[project]
+name = "opensoar-integrations"
+version = "0.1.0"
+description = "Community integration packs for OpenSOAR"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = ["opensoar-sdk>=0.1.0"]
+
+[project.optional-dependencies]
+crowdstrike = ["falconpy>=1.0"]
+sentinelone = ["aiohttp>=3.9"]
+jira = ["jira>=3.0"]
+pagerduty = ["pdpyras>=5.0"]
+misp = ["pymisp>=2.4"]
+dev = ["pytest", "pytest-asyncio"]
