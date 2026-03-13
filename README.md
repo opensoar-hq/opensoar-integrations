@@ -1,6 +1,6 @@
 # OpenSOAR Integrations
 
-Community-contributed integration packs for the [OpenSOAR](https://github.com/opensoar-hq/opensoar) SOAR platform.
+Community-contributed integration packs for the [OpenSOAR](https://github.com/opensoar-hq/opensoar-core) SOAR platform.
 
 ## Available Integrations
 
@@ -34,4 +34,4 @@ Quick start:
 
 ## Part of OpenSOAR
 
-See the [main repo](https://github.com/opensoar-hq/opensoar) for full documentation.
+See the [main repo](https://github.com/opensoar-hq/opensoar-core) for full documentation.
