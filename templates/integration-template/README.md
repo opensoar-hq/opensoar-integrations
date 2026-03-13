@@ -27,7 +27,7 @@ Connect OpenSOAR to Your Tool Name for [describe use case].
 ## Example Playbook Usage
 
 ```python
-from opensoar.core.decorators import playbook
+from opensoar_sdk import playbook
 
 @playbook(name="your_playbook")
 async def your_playbook(alert, actions):

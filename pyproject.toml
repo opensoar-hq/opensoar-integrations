@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Community integration packs for OpenSOAR"
 license = "Apache-2.0"
 requires-python = ">=3.11"
-dependencies = ["opensoar-sdk>=0.1.0"]
+dependencies = ["opensoar-sdk @ git+https://github.com/opensoar-hq/opensoar-sdk.git"]
 
 [tool.setuptools.packages.find]
 include = ["integrations*"]

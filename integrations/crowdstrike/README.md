@@ -49,7 +49,7 @@ Connect OpenSOAR to CrowdStrike Falcon for endpoint detection and response opera
 ## Example Playbook Usage
 
 ```python
-from opensoar.core.decorators import playbook
+from opensoar_sdk import playbook
 
 @playbook(name="crowdstrike_isolate_on_critical")
 async def isolate_on_critical(alert, actions):

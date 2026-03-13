@@ -4,14 +4,14 @@ from typing import Any
 
 import aiohttp
 
-from opensoar.integrations.base import ActionDefinition, HealthCheckResult, IntegrationBase
+from opensoar_sdk import Integration, ActionDefinition, HealthCheckResult
 
 # PagerDuty API endpoints
 _EVENTS_API_V2 = "https://events.pagerduty.com/v2/enqueue"
 _REST_API_BASE = "https://api.pagerduty.com"
 
 
-class PagerDutyIntegration(IntegrationBase):
+class PagerDutyIntegration(Integration):
     """PagerDuty integration using Events API v2 and REST API v2.
 
     Uses two authentication mechanisms:

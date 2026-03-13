@@ -5,10 +5,10 @@ from typing import Any
 
 import aiohttp
 
-from opensoar.integrations.base import ActionDefinition, HealthCheckResult, IntegrationBase
+from opensoar_sdk import Integration, ActionDefinition, HealthCheckResult
 
 
-class JiraIntegration(IntegrationBase):
+class JiraIntegration(Integration):
     """Jira Cloud / Data Center integration using REST API v3.
 
     Authenticates with email + API token (Cloud) using Basic Auth.

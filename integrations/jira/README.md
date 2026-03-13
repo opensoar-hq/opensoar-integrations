@@ -37,7 +37,7 @@ Connect OpenSOAR to Jira Cloud or Data Center for incident tracking and ticket m
 ## Example Playbook Usage
 
 ```python
-from opensoar.core.decorators import playbook
+from opensoar_sdk import playbook
 
 @playbook(name="create_incident_ticket")
 async def create_incident_ticket(alert, actions):

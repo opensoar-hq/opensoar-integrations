@@ -14,7 +14,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install "opensoar-sdk @ git+https://github.com/opensoar-hq/opensoar-sdk.git"
-      - run: pip install aiohttp
+      - run: pip install aiohttp falconpy jira pdpyras pymisp
       - run: pip install -e ".[dev]"
       - run: pytest

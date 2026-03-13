@@ -4,10 +4,10 @@ from typing import Any
 
 import aiohttp
 
-from opensoar.integrations.base import ActionDefinition, HealthCheckResult, IntegrationBase
+from opensoar_sdk import Integration, ActionDefinition, HealthCheckResult
 
 
-class SentinelOneIntegration(IntegrationBase):
+class SentinelOneIntegration(Integration):
     """SentinelOne integration using API token authentication.
 
     Authenticates via the APIToken header against the SentinelOne management

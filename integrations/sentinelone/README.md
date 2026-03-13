@@ -35,7 +35,7 @@ Connect OpenSOAR to SentinelOne for endpoint detection, response, and remediatio
 ## Example Playbook Usage
 
 ```python
-from opensoar.core.decorators import playbook
+from opensoar_sdk import playbook
 
 @playbook(name="sentinelone_auto_remediate")
 async def auto_remediate(alert, actions):

@@ -37,7 +37,7 @@ Connect OpenSOAR to PagerDuty for automated incident management and on-call esca
 ## Example Playbook Usage
 
 ```python
-from opensoar.core.decorators import playbook
+from opensoar_sdk import playbook
 
 @playbook(name="escalate_critical_alert")
 async def escalate_critical(alert, actions):

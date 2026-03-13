@@ -5,10 +5,10 @@ from typing import Any
 
 import aiohttp
 
-from opensoar.integrations.base import ActionDefinition, HealthCheckResult, IntegrationBase
+from opensoar_sdk import Integration, ActionDefinition, HealthCheckResult
 
 
-class CrowdStrikeIntegration(IntegrationBase):
+class CrowdStrikeIntegration(Integration):
     """CrowdStrike Falcon integration using OAuth2 client credentials.
 
     Authenticates via the /oauth2/token endpoint and uses the bearer token

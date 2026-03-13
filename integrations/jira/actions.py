@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from opensoar.core.decorators import action
+from opensoar_sdk import action
 
 
 @action(name="jira.create_issue", timeout=30, retries=2, retry_backoff=2.0)

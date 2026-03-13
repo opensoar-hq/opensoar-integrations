@@ -5,10 +5,10 @@ from typing import Any
 import aiohttp
 import ssl
 
-from opensoar.integrations.base import ActionDefinition, HealthCheckResult, IntegrationBase
+from opensoar_sdk import Integration, ActionDefinition, HealthCheckResult
 
 
-class MISPIntegration(IntegrationBase):
+class MISPIntegration(Integration):
     """MISP (Malware Information Sharing Platform) integration.
 
     Authenticates via the Authorization header with an automation API key.

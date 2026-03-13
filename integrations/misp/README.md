@@ -51,7 +51,7 @@ Common attribute types you can use with `add_attribute`:
 ## Example Playbook Usage
 
 ```python
-from opensoar.core.decorators import playbook
+from opensoar_sdk import playbook
 
 @playbook(name="enrich_ioc_from_misp")
 async def enrich_from_misp(alert, actions):

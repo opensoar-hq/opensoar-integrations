@@ -67,7 +67,7 @@ Mark any credentials with `secret: true` so OpenSOAR encrypts them at rest and r
 
 ## connector.py
 
-Your connector must subclass `IntegrationBase` from `opensoar.integrations.base`:
+Your connector must subclass `Integration` from `opensoar_sdk`:
 
 ```python
 from __future__ import annotations
@@ -76,14 +76,14 @@ from typing import Any
 
 import aiohttp
 
-from opensoar.integrations.base import (
+from opensoar_sdk import (
     ActionDefinition,
     HealthCheckResult,
-    IntegrationBase,
+    Integration,
 )
 
 
-class YourToolIntegration(IntegrationBase):
+class YourToolIntegration(Integration):
     integration_type = "your-tool"
     display_name = "Your Tool"
     description = "What it does"
@@ -138,7 +138,7 @@ class YourToolIntegration(IntegrationBase):
 Actions are standalone decorated functions that playbooks can call. They should work even without a configured connector (returning a placeholder if needed):
 
 ```python
-from opensoar.core.decorators import action
+from opensoar_sdk import action
 
 
 @action(name="your-tool.do_something", timeout=30, retries=2, retry_backoff=2.0)
@@ -204,7 +204,7 @@ pytest integrations/your-tool/tests/
 ## Pull Request Checklist
 
 - [ ] `manifest.yaml` is complete with config schema and actions
-- [ ] `connector.py` subclasses `IntegrationBase` with all abstract methods
+- [ ] `connector.py` subclasses `Integration` with all abstract methods
 - [ ] `actions.py` has `@action` decorated functions for each action
 - [ ] `README.md` documents setup and usage
 - [ ] Tests pass: `pytest integrations/your-tool/tests/`

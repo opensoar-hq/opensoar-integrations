@@ -4,10 +4,10 @@ from typing import Any
 
 import aiohttp
 
-from opensoar.integrations.base import ActionDefinition, HealthCheckResult, IntegrationBase
+from opensoar_sdk import Integration, ActionDefinition, HealthCheckResult
 
 
-class YourToolIntegration(IntegrationBase):
+class YourToolIntegration(Integration):
     """Your Tool integration.
 
     Replace this docstring with a description of how this integration
