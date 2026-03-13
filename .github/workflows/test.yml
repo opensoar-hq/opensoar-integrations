@@ -15,5 +15,6 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install "opensoar-sdk @ git+https://github.com/opensoar-hq/opensoar-sdk.git"
+      - run: pip install aiohttp
       - run: pip install -e ".[dev]"
       - run: pytest
