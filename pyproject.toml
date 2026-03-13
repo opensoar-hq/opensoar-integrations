@@ -6,6 +6,9 @@ license = "Apache-2.0"
 requires-python = ">=3.11"
 dependencies = ["opensoar-sdk>=0.1.0"]
 
+[tool.setuptools.packages.find]
+include = ["integrations*"]
+
 [project.optional-dependencies]
 crowdstrike = ["falconpy>=1.0"]
 sentinelone = ["aiohttp>=3.9"]
