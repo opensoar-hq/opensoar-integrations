@@ -100,46 +100,78 @@ class SentinelOneIntegration(Integration):
 
     async def isolate_endpoint(self, agent_id: str) -> dict:
         """Disconnect agent from network via POST /agents/actions/disconnect."""
-        # TODO: Implement SentinelOne endpoint isolation
-        # POST /agents/actions/disconnect
-        # Body: {"filter": {"ids": [agent_id]}}
-        raise NotImplementedError("TODO: implement SentinelOne isolate_endpoint")
+        try:
+            assert self._client is not None
+            async with self._client.post(
+                "/agents/actions/disconnect",
+                json={"filter": {"ids": [agent_id]}},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def reconnect_endpoint(self, agent_id: str) -> dict:
         """Reconnect agent via POST /agents/actions/connect."""
-        # TODO: Implement SentinelOne endpoint reconnection
-        # POST /agents/actions/connect
-        # Body: {"filter": {"ids": [agent_id]}}
-        raise NotImplementedError("TODO: implement SentinelOne reconnect_endpoint")
+        try:
+            assert self._client is not None
+            async with self._client.post(
+                "/agents/actions/connect",
+                json={"filter": {"ids": [agent_id]}},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def get_threats(
         self, query: str = "", limit: int = 100, status: str = ""
     ) -> dict:
         """Query threats via GET /threats."""
-        # TODO: Implement SentinelOne threat query
-        # GET /threats?query={query}&limit={limit}&statuses={status}
-        raise NotImplementedError("TODO: implement SentinelOne get_threats")
+        try:
+            assert self._client is not None
+            params: dict[str, Any] = {"limit": limit}
+            if query:
+                params["query"] = query
+            if status:
+                params["statuses"] = status
+            async with self._client.get("/threats", params=params) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def get_agent(self, agent_id: str) -> dict:
         """Get agent details via GET /agents."""
-        # TODO: Implement SentinelOne agent lookup
-        # GET /agents?ids={agent_id}
-        raise NotImplementedError("TODO: implement SentinelOne get_agent")
+        try:
+            assert self._client is not None
+            async with self._client.get(
+                "/agents", params={"ids": agent_id}
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def mitigate_threat(self, threat_id: str, action: str = "kill") -> dict:
         """Apply mitigation action via POST /threats/mitigate/{action}."""
-        # TODO: Implement SentinelOne threat mitigation
-        # POST /threats/mitigate/{action}
-        # Body: {"filter": {"ids": [threat_id]}}
-        # Valid actions: kill, quarantine, un-quarantine, remediate, rollback-remediation
-        raise NotImplementedError("TODO: implement SentinelOne mitigate_threat")
+        try:
+            assert self._client is not None
+            async with self._client.post(
+                f"/threats/mitigate/{action}",
+                json={"filter": {"ids": [threat_id]}},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def initiate_scan(self, agent_id: str) -> dict:
         """Initiate full disk scan via POST /agents/actions/initiate-scan."""
-        # TODO: Implement SentinelOne scan initiation
-        # POST /agents/actions/initiate-scan
-        # Body: {"filter": {"ids": [agent_id]}}
-        raise NotImplementedError("TODO: implement SentinelOne initiate_scan")
+        try:
+            assert self._client is not None
+            async with self._client.post(
+                "/agents/actions/initiate-scan",
+                json={"filter": {"ids": [agent_id]}},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def disconnect(self) -> None:
         if self._client:

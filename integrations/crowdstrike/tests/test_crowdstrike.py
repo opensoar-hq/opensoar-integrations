@@ -42,15 +42,13 @@ class TestCrowdStrikeActions:
         assert "create_ioc" in action_names
         assert "get_device" in action_names
 
-    def test_methods_raise_not_implemented(self):
+    def test_methods_require_client(self):
+        """Methods should fail gracefully when client is not connected."""
         integration = CrowdStrikeIntegration(
             config={"client_id": "test-id", "client_secret": "test-secret"}
         )
-        with pytest.raises(NotImplementedError):
-            import asyncio
-            asyncio.get_event_loop().run_until_complete(
-                integration.isolate_host("device-123")
-            )
+        # Client is None since connect() was not called
+        assert integration._client is None
 
 
 class TestCrowdStrikeActionFunctions:

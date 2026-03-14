@@ -213,4 +213,4 @@ pytest integrations/your-tool/tests/
 
 ## Questions?
 
-Open an issue on the [main OpenSOAR repo](https://github.com/opensoar-hq/opensoar) or start a discussion.
+Open an issue on the [main OpenSOAR repo](https://github.com/opensoar-hq/opensoar-core) or start a discussion.

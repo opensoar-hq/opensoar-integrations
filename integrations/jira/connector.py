@@ -125,58 +125,123 @@ class JiraIntegration(Integration):
         priority: str = "Medium",
     ) -> dict:
         """Create issue via POST /rest/api/3/issue."""
-        # TODO: Implement Jira issue creation
-        # POST /rest/api/3/issue
-        # Body: {
-        #   "fields": {
-        #     "project": {"key": project_key},
-        #     "summary": summary,
-        #     "description": {"type": "doc", "version": 1, "content": [...]},
-        #     "issuetype": {"name": issue_type},
-        #     "priority": {"name": priority},
-        #   }
-        # }
-        raise NotImplementedError("TODO: implement Jira create_issue")
+        try:
+            assert self._client is not None
+            adf_description = {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": [{"type": "text", "text": description or ""}],
+                    }
+                ],
+            }
+            body = {
+                "fields": {
+                    "project": {"key": project_key},
+                    "summary": summary,
+                    "description": adf_description,
+                    "issuetype": {"name": issue_type},
+                    "priority": {"name": priority},
+                }
+            }
+            async with self._client.post(
+                "/rest/api/3/issue", json=body
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def get_issue(self, issue_key: str) -> dict:
         """Get issue via GET /rest/api/3/issue/{issueKey}."""
-        # TODO: Implement Jira issue lookup
-        # GET /rest/api/3/issue/{issue_key}
-        raise NotImplementedError("TODO: implement Jira get_issue")
+        try:
+            assert self._client is not None
+            async with self._client.get(
+                f"/rest/api/3/issue/{issue_key}"
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def update_issue(self, issue_key: str, fields: dict[str, Any] | None = None) -> dict:
         """Update issue via PUT /rest/api/3/issue/{issueKey}."""
-        # TODO: Implement Jira issue update
-        # PUT /rest/api/3/issue/{issue_key}
-        # Body: {"fields": fields}
-        raise NotImplementedError("TODO: implement Jira update_issue")
+        try:
+            assert self._client is not None
+            async with self._client.put(
+                f"/rest/api/3/issue/{issue_key}",
+                json={"fields": fields or {}},
+            ) as resp:
+                if resp.status == 204:
+                    return {"status": "ok"}
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def transition_issue(self, issue_key: str, transition_name: str) -> dict:
         """Transition issue via POST /rest/api/3/issue/{issueKey}/transitions."""
-        # TODO: Implement Jira issue transition
-        # Step 1: GET /rest/api/3/issue/{issue_key}/transitions to find transition ID
-        # Step 2: POST /rest/api/3/issue/{issue_key}/transitions
-        # Body: {"transition": {"id": transition_id}}
-        raise NotImplementedError("TODO: implement Jira transition_issue")
+        try:
+            assert self._client is not None
+            # Step 1: Get available transitions
+            async with self._client.get(
+                f"/rest/api/3/issue/{issue_key}/transitions"
+            ) as resp:
+                data = await resp.json()
+            transitions = data.get("transitions", [])
+            transition_id = None
+            for t in transitions:
+                if t.get("name", "").lower() == transition_name.lower():
+                    transition_id = t["id"]
+                    break
+            if not transition_id:
+                return {
+                    "error": f"Transition '{transition_name}' not found",
+                    "available": [t.get("name") for t in transitions],
+                }
+            # Step 2: Perform the transition
+            async with self._client.post(
+                f"/rest/api/3/issue/{issue_key}/transitions",
+                json={"transition": {"id": transition_id}},
+            ) as resp:
+                if resp.status == 204:
+                    return {"status": "ok"}
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def add_comment(self, issue_key: str, body: str) -> dict:
         """Add comment via POST /rest/api/3/issue/{issueKey}/comment."""
-        # TODO: Implement Jira add comment
-        # POST /rest/api/3/issue/{issue_key}/comment
-        # Body: {
-        #   "body": {
-        #     "type": "doc", "version": 1,
-        #     "content": [{"type": "paragraph", "content": [{"type": "text", "text": body}]}]
-        #   }
-        # }
-        raise NotImplementedError("TODO: implement Jira add_comment")
+        try:
+            assert self._client is not None
+            adf_body = {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": [{"type": "text", "text": body}],
+                    }
+                ],
+            }
+            async with self._client.post(
+                f"/rest/api/3/issue/{issue_key}/comment",
+                json={"body": adf_body},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def search_issues(self, jql: str, max_results: int = 50) -> dict:
         """Search issues via POST /rest/api/3/search."""
-        # TODO: Implement Jira JQL search
-        # POST /rest/api/3/search
-        # Body: {"jql": jql, "maxResults": max_results}
-        raise NotImplementedError("TODO: implement Jira search_issues")
+        try:
+            assert self._client is not None
+            async with self._client.post(
+                "/rest/api/3/search",
+                json={"jql": jql, "maxResults": max_results},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def disconnect(self) -> None:
         if self._client:

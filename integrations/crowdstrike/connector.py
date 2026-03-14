@@ -139,36 +139,84 @@ class CrowdStrikeIntegration(Integration):
 
     async def isolate_host(self, device_id: str) -> dict:
         """Network-contain a host via POST /devices/entities/devices-actions/v2."""
-        # TODO: Implement CrowdStrike host containment
-        # POST /devices/entities/devices-actions/v2?action_name=contain
-        # Body: {"ids": [device_id]}
-        raise NotImplementedError("TODO: implement CrowdStrike isolate_host")
+        try:
+            token = await self._ensure_token()
+            assert self._client is not None
+            self._client.headers.update({"Authorization": f"Bearer {token}"})
+            async with self._client.post(
+                "/devices/entities/devices-actions/v2?action_name=contain",
+                json={"ids": [device_id]},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def lift_containment(self, device_id: str) -> dict:
         """Lift containment via POST /devices/entities/devices-actions/v2."""
-        # TODO: Implement CrowdStrike lift containment
-        # POST /devices/entities/devices-actions/v2?action_name=lift_containment
-        # Body: {"ids": [device_id]}
-        raise NotImplementedError("TODO: implement CrowdStrike lift_containment")
+        try:
+            token = await self._ensure_token()
+            assert self._client is not None
+            self._client.headers.update({"Authorization": f"Bearer {token}"})
+            async with self._client.post(
+                "/devices/entities/devices-actions/v2?action_name=lift_containment",
+                json={"ids": [device_id]},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def get_detection(self, detection_id: str) -> dict:
         """Get detection details via POST /detects/entities/summaries/GET/v1."""
-        # TODO: Implement CrowdStrike get detection
-        # POST /detects/entities/summaries/GET/v1
-        # Body: {"ids": [detection_id]}
-        raise NotImplementedError("TODO: implement CrowdStrike get_detection")
+        try:
+            token = await self._ensure_token()
+            assert self._client is not None
+            self._client.headers.update({"Authorization": f"Bearer {token}"})
+            async with self._client.post(
+                "/detects/entities/summaries/GET/v1",
+                json={"ids": [detection_id]},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def search_detections(self, filter: str = "", limit: int = 100) -> dict:
         """Search detections via GET /detects/queries/detects/v1."""
-        # TODO: Implement CrowdStrike search detections
-        # GET /detects/queries/detects/v1?filter={filter}&limit={limit}
-        raise NotImplementedError("TODO: implement CrowdStrike search_detections")
+        try:
+            token = await self._ensure_token()
+            assert self._client is not None
+            self._client.headers.update({"Authorization": f"Bearer {token}"})
+            params: dict[str, Any] = {"limit": limit}
+            if filter:
+                params["filter"] = filter
+            async with self._client.get(
+                "/detects/queries/detects/v1",
+                params=params,
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def search_iocs(self, type: str = "", value: str = "") -> dict:
         """Search IOC indicators via GET /iocs/queries/indicators/v1."""
-        # TODO: Implement CrowdStrike IOC search
-        # GET /iocs/queries/indicators/v1?filter=type:'{type}'+value:'{value}'
-        raise NotImplementedError("TODO: implement CrowdStrike search_iocs")
+        try:
+            token = await self._ensure_token()
+            assert self._client is not None
+            self._client.headers.update({"Authorization": f"Bearer {token}"})
+            filter_parts = []
+            if type:
+                filter_parts.append(f"type:'{type}'")
+            if value:
+                filter_parts.append(f"value:'{value}'")
+            params: dict[str, str] = {}
+            if filter_parts:
+                params["filter"] = "+".join(filter_parts)
+            async with self._client.get(
+                "/iocs/queries/indicators/v1",
+                params=params,
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def create_ioc(
         self,
@@ -179,17 +227,39 @@ class CrowdStrikeIntegration(Integration):
         description: str = "",
     ) -> dict:
         """Create a custom IOC via POST /iocs/entities/indicators/v1."""
-        # TODO: Implement CrowdStrike IOC creation
-        # POST /iocs/entities/indicators/v1
-        # Body: {"indicators": [{"type": type, "value": value, "action": action, ...}]}
-        raise NotImplementedError("TODO: implement CrowdStrike create_ioc")
+        try:
+            token = await self._ensure_token()
+            assert self._client is not None
+            self._client.headers.update({"Authorization": f"Bearer {token}"})
+            indicator: dict[str, Any] = {
+                "type": type,
+                "value": value,
+                "action": action,
+                "severity": severity,
+            }
+            if description:
+                indicator["description"] = description
+            async with self._client.post(
+                "/iocs/entities/indicators/v1",
+                json={"indicators": [indicator]},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def get_device(self, device_id: str) -> dict:
         """Get host details via POST /devices/entities/devices/v2."""
-        # TODO: Implement CrowdStrike device lookup
-        # POST /devices/entities/devices/v2
-        # Body: {"ids": [device_id]}
-        raise NotImplementedError("TODO: implement CrowdStrike get_device")
+        try:
+            token = await self._ensure_token()
+            assert self._client is not None
+            self._client.headers.update({"Authorization": f"Bearer {token}"})
+            async with self._client.post(
+                "/devices/entities/devices/v2",
+                json={"ids": [device_id]},
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def disconnect(self) -> None:
         if self._client:

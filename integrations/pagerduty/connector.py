@@ -124,47 +124,67 @@ class PagerDutyIntegration(Integration):
         custom_details: dict[str, Any] | None = None,
     ) -> dict:
         """Trigger incident via POST https://events.pagerduty.com/v2/enqueue."""
-        # TODO: Implement PagerDuty event trigger
-        # POST https://events.pagerduty.com/v2/enqueue
-        # Body: {
-        #   "routing_key": routing_key or self._config.get("routing_key"),
-        #   "event_action": "trigger",
-        #   "payload": {
-        #     "summary": summary,
-        #     "severity": severity,  # critical, error, warning, info
-        #     "source": source,
-        #     "custom_details": custom_details or {},
-        #   },
-        # }
-        raise NotImplementedError("TODO: implement PagerDuty trigger_incident")
+        try:
+            assert self._events_client is not None
+            body = {
+                "routing_key": routing_key or self._config.get("routing_key", ""),
+                "event_action": "trigger",
+                "payload": {
+                    "summary": summary,
+                    "severity": severity,
+                    "source": source,
+                    "custom_details": custom_details or {},
+                },
+            }
+            async with self._events_client.post(
+                _EVENTS_API_V2, json=body
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def acknowledge_incident(self, dedup_key: str, routing_key: str = "") -> dict:
         """Acknowledge incident via POST https://events.pagerduty.com/v2/enqueue."""
-        # TODO: Implement PagerDuty event acknowledgment
-        # POST https://events.pagerduty.com/v2/enqueue
-        # Body: {
-        #   "routing_key": routing_key or self._config.get("routing_key"),
-        #   "event_action": "acknowledge",
-        #   "dedup_key": dedup_key,
-        # }
-        raise NotImplementedError("TODO: implement PagerDuty acknowledge_incident")
+        try:
+            assert self._events_client is not None
+            body = {
+                "routing_key": routing_key or self._config.get("routing_key", ""),
+                "event_action": "acknowledge",
+                "dedup_key": dedup_key,
+            }
+            async with self._events_client.post(
+                _EVENTS_API_V2, json=body
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def resolve_incident(self, dedup_key: str, routing_key: str = "") -> dict:
         """Resolve incident via POST https://events.pagerduty.com/v2/enqueue."""
-        # TODO: Implement PagerDuty event resolution
-        # POST https://events.pagerduty.com/v2/enqueue
-        # Body: {
-        #   "routing_key": routing_key or self._config.get("routing_key"),
-        #   "event_action": "resolve",
-        #   "dedup_key": dedup_key,
-        # }
-        raise NotImplementedError("TODO: implement PagerDuty resolve_incident")
+        try:
+            assert self._events_client is not None
+            body = {
+                "routing_key": routing_key or self._config.get("routing_key", ""),
+                "event_action": "resolve",
+                "dedup_key": dedup_key,
+            }
+            async with self._events_client.post(
+                _EVENTS_API_V2, json=body
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def get_incident(self, incident_id: str) -> dict:
         """Get incident via GET /incidents/{id}."""
-        # TODO: Implement PagerDuty incident lookup
-        # GET /incidents/{incident_id}
-        raise NotImplementedError("TODO: implement PagerDuty get_incident")
+        try:
+            assert self._client is not None
+            async with self._client.get(
+                f"/incidents/{incident_id}"
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def list_incidents(
         self,
@@ -174,17 +194,40 @@ class PagerDutyIntegration(Integration):
         until: str = "",
     ) -> dict:
         """List incidents via GET /incidents."""
-        # TODO: Implement PagerDuty incident listing
-        # GET /incidents?statuses[]={status}&urgencies[]={urgency}&since={since}&until={until}
-        raise NotImplementedError("TODO: implement PagerDuty list_incidents")
+        try:
+            assert self._client is not None
+            params: list[tuple[str, str]] = []
+            if statuses:
+                for s in statuses:
+                    params.append(("statuses[]", s))
+            if urgencies:
+                for u in urgencies:
+                    params.append(("urgencies[]", u))
+            if since:
+                params.append(("since", since))
+            if until:
+                params.append(("until", until))
+            async with self._client.get("/incidents", params=params) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def create_note(self, incident_id: str, content: str) -> dict:
         """Add note via POST /incidents/{id}/notes."""
-        # TODO: Implement PagerDuty note creation
-        # POST /incidents/{incident_id}/notes
-        # Headers: {"From": self._config.get("default_from_email")}
-        # Body: {"note": {"content": content}}
-        raise NotImplementedError("TODO: implement PagerDuty create_note")
+        try:
+            assert self._client is not None
+            headers: dict[str, str] = {}
+            from_email = self._config.get("default_from_email")
+            if from_email:
+                headers["From"] = from_email
+            async with self._client.post(
+                f"/incidents/{incident_id}/notes",
+                json={"note": {"content": content}},
+                headers=headers,
+            ) as resp:
+                return await resp.json()
+        except Exception as e:
+            return {"error": str(e)}
 
     async def disconnect(self) -> None:
         if self._client:
