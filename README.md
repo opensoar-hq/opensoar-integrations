@@ -2,6 +2,8 @@
 
 Community-contributed integration packs for the [OpenSOAR](https://github.com/opensoar-hq/opensoar-core) SOAR platform.
 
+**OpenSOAR is a PwnKit Labs product.**
+
 ## Available Integrations
 
 | Integration | Category | Status | Actions |
