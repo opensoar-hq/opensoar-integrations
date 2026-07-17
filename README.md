@@ -1,8 +1,16 @@
-# OpenSOAR Integrations
+<p align="center">
+  <img src="https://raw.githubusercontent.com/opensoar-hq/opensoar-www/main/public/logo.svg" width="64" height="62" alt="OpenSOAR">
+</p>
+
+<h1 align="center">OpenSOAR Integrations</h1>
+
+<p align="center"><strong>Community integration packs for OpenSOAR — EDR, ITSM, alerting, and threat intel.</strong></p>
+
+<p align="center"><sub>OpenSOAR is a <a href="https://0sec.ai">0sec Labs</a> product.</sub></p>
+
+---
 
 Community-contributed integration packs for the [OpenSOAR](https://github.com/opensoar-hq/opensoar-core) SOAR platform.
-
-**OpenSOAR is a PwnKit Labs product.**
 
 ## Available Integrations
 
